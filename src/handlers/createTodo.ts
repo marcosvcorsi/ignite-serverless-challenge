@@ -12,12 +12,18 @@ class CreateTodoHandler implements IHandler {
 
   async handle(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
     try {
+      const { user_id } = event.pathParameters;
       const data = JSON.parse(event.body);
 
-      const todo = await this.createTodoUseCase.execute(data);
+      const todo = await this.createTodoUseCase.execute({
+        user_id,
+        ...data,
+      });
 
       return created(todo);
     } catch(error) {
+      console.error('error', error);
+
       return internalServerError();
     }
   }

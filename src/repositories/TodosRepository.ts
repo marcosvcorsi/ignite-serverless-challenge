@@ -6,7 +6,7 @@ import { ITodosRepository } from "./ITodosRepository";
 
 export class TodosRepository implements ITodosRepository {
   private readonly dynamoDb: DynamoDB.DocumentClient;
-  private readonly tableName = process.env.TODO_TABLE_NAME;
+  private readonly tableName = process.env.TODOS_TABLE_NAME;
   
   constructor() {
     this.dynamoDb = new DynamoDB.DocumentClient();
@@ -15,7 +15,7 @@ export class TodosRepository implements ITodosRepository {
   async create(data: CreateTodoDto): Promise<Todo> {
     const todo = new Todo();
     
-    Object.assign(todo, data, { deadline: data.deadline.toISOString() })
+    Object.assign(todo, data)
 
     await this.dynamoDb.put({
       TableName: this.tableName,

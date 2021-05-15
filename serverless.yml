@@ -8,20 +8,48 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    TODOS_TABLE_NAME: ${self:custom.TodosTable.name}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - ${self:custom.TodosTable.arn}  
+    
+functions:
+  createTodo:
+    handler: src/handlers/createTodo.handle
+    events:
+      - http:
+          path: /todos/{user_id}
+          method: post
+          cors: true  
 
-package:
-  excludeDevDependencies: true  
+resources:
+  Resources:
+    TodosTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: TodosTable-${self:provider.stage}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1            
 
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  TodosTable:
+    name: !Ref TodosTable
+    arn: !GetAtt TodosTable.Arn 
     
-functions:
-  hello:
-    handler: src/handlers/hello.handle
-    events:
-      - http:
-          path: /hello
-          method: post
-          cors: true  
+package:
+  excludeDevDependencies: true      

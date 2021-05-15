@@ -10,6 +10,7 @@ export class Todo {
   constructor() {
     if (!this.id) {
       this.id = v4();
+      this.done = false;
     }
   }
 }
