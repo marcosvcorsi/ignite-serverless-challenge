@@ -8,7 +8,10 @@ provider:
   name: aws
   runtime: nodejs14.x
   region: us-east-1
-  
+
+package:
+  excludeDevDependencies: true  
+
 custom:
   webpack:
     webpackConfig: ./webpack.config.js

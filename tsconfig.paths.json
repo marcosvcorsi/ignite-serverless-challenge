@@ -2,8 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@dtos/*": ["src/dtos/*"],
       "@handlers/*": ["src/handlers/*"],
-      "@helpers/*": ["src/helpers/*"]
+      "@helpers/*": ["src/helpers/*"],
+      "@models/*": ["src/models/*"],
+      "@protocols/*": ["src/protocols/*"],
+      "@repositories/*": ["src/repositories/*"],
+      "@useCases/*": ["src/useCases/*"]
     }
   }
 }
