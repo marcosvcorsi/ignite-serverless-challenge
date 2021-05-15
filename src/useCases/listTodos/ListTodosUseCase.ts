@@ -1,6 +1,6 @@
-import { Todo } from "@models/Todo";
-import { IUseCase } from "@protocols/IUseCase";
-import { ITodosRepository } from "@repositories/ITodosRepository";
+import { Todo } from "@/models/Todo";
+import { IUseCase } from "@/protocols/IUseCase";
+import { ITodosRepository } from "@/repositories/ITodosRepository";
 
 export class ListTodosUseCase implements IUseCase<string, Todo[]> {
   constructor(private readonly todosRepository: ITodosRepository) {}

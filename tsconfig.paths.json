@@ -2,14 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@dtos/*": ["src/dtos/*"],
-      "@errors/*": ["src/errors/*"],
-      "@handlers/*": ["src/handlers/*"],
-      "@helpers/*": ["src/helpers/*"],
-      "@models/*": ["src/models/*"],
-      "@protocols/*": ["src/protocols/*"],
-      "@repositories/*": ["src/repositories/*"],
-      "@useCases/*": ["src/useCases/*"]
+      "@/*": ["src/*"],
     }
   }
 }

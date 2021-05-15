@@ -1,7 +1,7 @@
 import { DynamoDB } from 'aws-sdk';
 
-import { CreateTodoDto } from "src/dtos/CreateTodoDto";
-import { Todo } from "src/models/Todo";
+import { CreateTodoDto } from "@/dtos/CreateTodoDto";
+import { Todo } from "@/models/Todo";
 import { ITodosRepository } from "./ITodosRepository";
 
 export class TodosRepository implements ITodosRepository {
