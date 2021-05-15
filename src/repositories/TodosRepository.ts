@@ -24,4 +24,21 @@ export class TodosRepository implements ITodosRepository {
 
     return todo;
   }
+
+  async findByUser(user_id: string): Promise<Todo[]> {
+    const { Items } = await this.dynamoDb.query({
+      TableName: this.tableName,
+      IndexName: 'userIdAndCreatedAt',
+      KeyConditionExpression: '#user_id = :user_id',
+      ExpressionAttributeNames: {
+        '#user_id': 'user_id'
+      },
+      ExpressionAttributeValues: {
+        ':user_id': user_id
+      },
+      ScanIndexForward: false,
+    }).promise();
+
+    return Items as Todo[] || [];
+  }
 }

@@ -6,11 +6,13 @@ export class Todo {
   title: string;
   done: boolean;
   deadline: string;
+  created_at: string;
 
   constructor() {
     if (!this.id) {
       this.id = v4();
       this.done = false;
+      this.created_at = new Date().toISOString();
     }
   }
 }

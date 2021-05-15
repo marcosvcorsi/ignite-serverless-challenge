@@ -14,9 +14,11 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:*
+        - dynamodb:PutItem
+        - dynamodb:Query
       Resource:
-        - ${self:custom.TodosTable.arn}  
+        - ${self:custom.TodosTable.arn}
+        - !Join ['/', [ '${self:custom.TodosTable.arn}', 'index', 'userIdAndCreatedAt' ]]
     
 functions:
   createTodo:
@@ -25,7 +27,14 @@ functions:
       - http:
           path: /todos/{user_id}
           method: post
-          cors: true  
+          cors: true
+  listTodos:
+    handler: src/handlers/listTodos.handle
+    events:
+      - http:
+          path: /todos/{user_id}
+          method: get
+          cors: true          
 
 resources:
   Resources:
@@ -33,16 +42,26 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: TodosTable-${self:provider.stage}
+        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: user_id
+            AttributeType: S
+          - AttributeName: created_at
+            AttributeType: S      
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1            
-
+        GlobalSecondaryIndexes:
+          - IndexName: userIdAndCreatedAt
+            KeySchema:
+              - AttributeName: user_id
+                KeyType: HASH
+              - AttributeName: created_at
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL    
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
