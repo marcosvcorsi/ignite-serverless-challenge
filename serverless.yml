@@ -3,6 +3,9 @@ service:
 
 plugins:
   - serverless-webpack
+  - serverless-dotenv-plugin
+  - serverless-dynamodb-local
+  - serverless-offline
 
 provider:
   name: aws
@@ -66,6 +69,14 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  dynamodb:
+    stages:
+      - dev
+      - local
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true   
   TodosTable:
     name: !Ref TodosTable
     arn: !GetAtt TodosTable.Arn 

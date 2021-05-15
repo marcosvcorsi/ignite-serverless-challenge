@@ -10,6 +10,8 @@ export class TodosRepository implements ITodosRepository {
   
   constructor() {
     this.dynamoDb = new DynamoDB.DocumentClient();
+
+    console.log('tablename', JSON.stringify(process.env));
   }
 
   async create(data: CreateTodoDto): Promise<Todo> {
